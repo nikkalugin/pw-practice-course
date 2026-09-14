@@ -9,9 +9,6 @@ export class AddCarForm extends BaseForm {
     public readonly addCarButton: Locator = this.page.getByRole('button', { name: 'Add', exact: true });
     private readonly cancelButton: Locator = this.page.getByRole('button', { name: 'Cancel' });
     private readonly closeIcon: Locator = this.page.locator('button[aria-label="Close"]');
-    private readonly successMessage: Locator = this.page.locator('.alert-success p', { hasText: 'Car added' });
-    private readonly lastAddedCarName: Locator = this.page.locator('.car_name.h2').first();
-    private readonly lastAddedCarMileageField: Locator = this.page.locator('[name="miles"]').first();
 
     private async waitForModelUpdate() {
         await this.page.waitForTimeout(500);
@@ -23,12 +20,6 @@ export class AddCarForm extends BaseForm {
         await this.selectModel(model);
         await this.enterMileage(mileage);
         await this.clickAddCarButton();
-    }
-
-    async verifyCarIsAdded(carName: string, carMileage: string) {
-        await expect(this.successMessage).toBeVisible();
-        await expect(this.lastAddedCarName).toHaveText(carName);
-        await expect(this.lastAddedCarMileageField).toHaveValue(carMileage);
     }
 
     async selectBrand(brand: string) {

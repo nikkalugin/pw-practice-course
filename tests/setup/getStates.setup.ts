@@ -1,25 +1,23 @@
-import test, { expect } from "@playwright/test";
-import { GaragePage } from "../../pom/pages/GaragePage";
-import { HomePage } from "../../pom/pages/HomePage";
-import { SignInForm } from "../../pom/forms/SignInForm";
-import { AddCarForm } from "../../pom/forms/AddCarForm";
-import { testUser1 } from "../../test-data/validUsers";
+import { expect } from "@playwright/test";
+import { testUser1, testUser2 } from "../../test-data/validUsers";
+import { test } from "../../utils/fixtures/pagesFixtures";
 
-let garagePage: GaragePage;
-let homePage: HomePage;
-let signInForm: SignInForm;
-let addCarForm: AddCarForm;
+test('Log in as testUser1 and save Storage State', async ({ context, app }) => {
+    await app.homePage.navigate();
+    await app.homePage.openSignInForm();
+    await app.signInForm.signInWithCredentials(testUser1.email, testUser1.password);
+    await expect(app.garagePage.pageHeading).toContainText('Garage');
 
-test('Log in as testUser1 and save Storage State', async ({ page, context }) => {
-    garagePage = new GaragePage(page);
-    homePage = new HomePage(page);
-    signInForm = new SignInForm(page);
-    addCarForm = new AddCarForm(page);
+    await context.storageState({ path: '.states/testUser1.json' });
+    await context.close();
+});
 
-    await homePage.navigate();
-    await homePage.openSignInForm();
-    await signInForm.signInWithCredentials(testUser1.email, testUser1.password);
-    await expect(garagePage.pageHeading).toContainText('Garage');
+test('Log in as testUser2 and save Storage State', async ({ context, app }) => {
+    await app.homePage.navigate();
+    await app.homePage.openSignInForm();
+    await app.signInForm.signInWithCredentials(testUser2.email, testUser2.password);
+    await expect(app.garagePage.pageHeading).toContainText('Garage');
 
-    await context.storageState({ path: '.states/auth.json' });
+    await context.storageState({ path: '.states/testUser2.json' });
+    await context.close();
 });
