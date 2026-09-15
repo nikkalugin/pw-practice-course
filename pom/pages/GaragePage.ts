@@ -9,7 +9,7 @@ export class GaragePage extends BasePage {
     private readonly successAddingMessage: Locator = this.page.locator('.alert-success p', { hasText: 'Car added' });
     private readonly successRemovingMessage: Locator = this.page.locator('.alert-success p', { hasText: 'Car removed' });
     private readonly lastAddedCarName: Locator = this.page.locator('.car_name.h2').first();
-    private readonly lastAddedCarMileageField: Locator = this.page.locator('[name="miles"]').first();
+    public readonly lastAddedCarMileageField: Locator = this.page.locator('[name="miles"]').first();
 
     async navigate() {
         await super.navigate('/panel/garage');
