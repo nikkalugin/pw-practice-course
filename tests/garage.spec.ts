@@ -1,5 +1,9 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/fixtures/pagesFixtures";
+import GarageService from "../utils/api/services/GarageService";
+import { getSidFromStorageState } from "../utils/storageState/storageState";
+
+let garageService: GarageService;
 
 test.describe('Garage tests', () => {
 
@@ -21,16 +25,15 @@ test.describe('Garage tests', () => {
         test('Add new car - Audi Q7', async ({ app }) => {
             await app.addCarForm.addNewCar('Audi', 'Q7', '666');
             await app.garagePage.verifyCarIsAdded('Audi Q7', '666');
-            // await expect(app.page.locator('.car-item').first()).toHaveScreenshot('last-added-car-audi-q7.png', { mask: [app.garagePage.lastAddedCarMileageField] });
-            // await expect(app.page.locator('.car-item').first()).toHaveScreenshot('last-added-car-audi-q7.png', { maxDiffPixels: 62 });
-
             await app.page.screenshot({ path: 'garage-page2.png', fullPage: true });
         });
 
-        test.afterEach(async ({ app }) => {
-            await app.garagePage.openEditCarForm(0);
-            await app.editCarForm.removeOpenedCar();
-            await app.garagePage.verifyCarIsRemoved();
+        test.afterEach(async ({ request }) => {
+            garageService = new GarageService(request);
+            const sid = getSidFromStorageState('.states/testUser1.json');
+            const allAddedCars = await garageService.getUsersCars(sid);
+            const lastAddedCarId = allAddedCars.data[0].id;
+            await garageService.removeCar(sid, lastAddedCarId);
         });
 
     });

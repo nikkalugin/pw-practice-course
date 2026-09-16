@@ -1,5 +1,5 @@
 import { chromium } from "@playwright/test";
-import { test, expect } from "../utils/fixtures/screenSizesFixtures";
+import { test, expect } from "../../utils/fixtures/screenSizesFixtures";
 
 test.describe('Fixtures', () => {
 

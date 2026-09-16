@@ -47,12 +47,25 @@ export default defineConfig({
     projects: [
         {
             name: 'setup',
-            testMatch: '**/setup/**.setup.ts'
+            testMatch: '**/setup/**.setup.ts',
+            workers: 1
         },
         {
             name: 'e2e',
             use: { ...devices['Desktop Chrome'] },
-            dependencies: ['setup']
+            dependencies: ['setup'],
+            testMatch: '/tests/**.spec.ts'
+        },
+        {
+            name: 'api',
+            use: { ...devices['Desktop Chrome'] },
+            dependencies: ['setup'],
+            testMatch: '/tests/api/**.spec.ts'
+        },
+        {
+            name: 'practice',
+            use: { ...devices['Desktop Chrome'] },
+            testMatch: '/tests/practice/**.ts'
         },
 
         // {
