@@ -25,7 +25,7 @@ test.describe('Garage tests', () => {
         test('Add new car - Audi Q7', async ({ app }) => {
             await app.addCarForm.addNewCar('Audi', 'Q7', '666');
             await app.garagePage.verifyCarIsAdded('Audi Q7', '666');
-            await app.page.screenshot({ path: 'garage-page2.png', fullPage: true });
+            // await app.page.screenshot({ path: 'garage-page2.png', fullPage: true });
         });
 
         test.afterEach(async ({ request }) => {
