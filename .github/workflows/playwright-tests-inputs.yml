@@ -1,7 +1,13 @@
-name: Playwright Tests (GitHub Pages)
+name: Playwright Tests (Inputs)
 
 on:
   workflow_dispatch:
+    inputs:
+      project:
+        description: 'Project to run'
+        required: false
+        default: 'e2e'
+        type: string
 
 jobs:
   test:
@@ -21,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: Run Playwright tests
-        run: npx playwright test --project=e2e
+        run: npx playwright test --project=${{ inputs.project }}
 
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v7
